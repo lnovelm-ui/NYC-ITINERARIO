@@ -13,717 +13,825 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NYC Díaz Novel">
-
-
 <style>
-  * { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-    background: #fdf8ec;
-    color: #1f2430;
-    padding-bottom: 40px;
-  }
-
-  /* ---- HERO ---- */
-  .hero {
-    background: linear-gradient(160deg, #0b1f3a 0%, #12315c 50%, #f2a900 130%);
-    color: #fff;
-    padding: 34px 20px 78px 20px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero .emo { font-size: 26px; letter-spacing: 6px; }
-  .hero h1 { font-size: 34px; font-weight: 800; letter-spacing: 2px; margin-top: 6px; }
-  .hero .sub { font-size: 13px; opacity: .9; margin-top: 4px; letter-spacing: 1px; }
-  .hero .fam {
-    display:inline-block; margin-top: 16px; position: relative; z-index: 2;
-    background: rgba(255,255,255,.15); border:1.5px solid #f2a900;
-    border-radius: 30px; padding: 8px 20px; font-weight: 700; font-size: 15px;
-  }
-  .hero .emo, .hero h1, .hero .sub { position: relative; z-index: 2; }
-  .hero .skyline { position:absolute; bottom:-2px; left:0; width:100%; opacity:.9; z-index: 1; }
-
-  /* ---- NAV PILLS ---- */
-  .navbar {
-    position: sticky; top: 0; z-index: 50;
-    background: #fdf8ec;
-    display: flex; gap: 8px; overflow-x: auto;
-    padding: 10px 14px; border-bottom: 1px solid #eee2c4;
-    -webkit-overflow-scrolling: touch;
-  }
-  .navbar button {
-    flex: 0 0 auto;
-    text-decoration: none;
-    font-size: 12px; font-weight: 800; color: #fff;
-    padding: 7px 13px; border-radius: 20px; white-space: nowrap;
-    filter: saturate(.55) brightness(.92);
-    transition: filter .15s, transform .15s, box-shadow .15s;
-    border: 2px solid transparent;
-    cursor: pointer;
-    font-family: inherit;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  .navbar button.active {
-    filter: none;
-    transform: scale(1.08);
-    box-shadow: 0 3px 10px rgba(0,0,0,.25);
-    border-color: rgba(255,255,255,.85);
-  }
-
-  /* ---- DAY CARD ---- */
-  .day {
-    margin: 18px 14px;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 4px 18px rgba(0,0,0,.10);
-    scroll-margin-top: 60px;
-    animation: fadeIn .25s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .day.hidden { display: none; }
-  .info.hidden { display: none; }
-  .tickets-wrap.hidden { display: none; }
-
-  .arrows {
-    display: flex; justify-content: space-between;
-    margin: 4px 14px 0 14px;
-  }
-  .arrows button {
-    flex: 1; margin: 0 6px;
-    border: none; border-radius: 12px;
-    background: #12172b; color: #fff;
-    font-size: 13px; font-weight: 700;
-    padding: 12px 10px;
-    font-family: inherit;
-    cursor: pointer;
-  }
-  .arrows button:disabled { opacity: .3; }
-  .day-head {
-    color: #fff;
-    padding: 18px 18px 16px 18px;
-    position: relative;
-  }
-  .day-head .badge {
-    display:inline-block; background: rgba(255,255,255,.22);
-    border-radius: 20px; padding: 3px 12px; font-size: 11px;
-    font-weight: 700; letter-spacing: 1.5px; margin-bottom: 6px;
-  }
-  .day-head h2 { font-size: 22px; font-weight: 800; line-height: 1.2; }
-  .day-head .date { font-size: 12.5px; opacity: .92; margin-top: 3px; }
-  .day-head .icon { position:absolute; right:16px; top:16px; font-size: 30px; }
-
-  .day-body { background: #fff; padding: 14px 16px 18px 16px; }
-  .block { margin-bottom: 14px; }
-  .block:last-child { margin-bottom: 0; }
-  .block h3 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 5px; display:flex; align-items:center; gap:6px;
-    font-weight: 800;
-  }
-  .block p, .block li { font-size: 13.5px; line-height: 1.55; color: #3a3a3a; }
-  .block ul { margin-left: 16px; margin-top: 2px; }
-
-  .timeline {
-    margin-top: 10px;
-    background: #f4f0e4;
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 12px;
-    line-height: 1.9;
-    color: #4a4232;
-  }
-  .timeline .lbl { font-weight: 800; }
-
-  .highlight {
-    background: #fff6de;
-    border-left: 3px solid #f2a900;
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 12.5px;
-    margin-top: 6px;
-  }
-
-  /* ---- TICKET WALLET ---- */
-  .tickets-wrap { margin: 0; }
-  .subnav {
-    display: flex; gap: 7px; overflow-x: auto; -webkit-overflow-scrolling: touch;
-    padding: 4px 14px 12px 14px;
-  }
-  .subnav button {
-    flex: 0 0 auto; font-size: 11px; font-weight: 800; color:#fff;
-    padding: 6px 11px; border-radius: 18px; white-space: nowrap;
-    filter: saturate(.5) brightness(.9);
-    transition: filter .15s, transform .15s, box-shadow .15s;
-    border: 2px solid transparent; cursor:pointer; font-family: inherit;
-    -webkit-appearance:none; appearance:none;
-  }
-  .subnav button.active { filter:none; transform:scale(1.08); box-shadow:0 3px 8px rgba(0,0,0,.22); border-color: rgba(255,255,255,.85); }
-
-  .tsec { margin: 0 14px 18px 14px; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,.10); }
-  .tsec.hidden { display:none; }
-
-  .ticket { border: 1.5px dashed #d8cfa8; border-radius: 14px; padding: 14px; margin-bottom: 12px; text-align:center; }
-  .ticket:last-child { margin-bottom: 0; }
-  .ticket .who { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing:.5px; color:#444; margin-bottom: 8px; }
-  .ticket img { width: 168px; height:auto; display:block; margin:0 auto 8px auto; border: 6px solid #fff; box-shadow: 0 1px 6px rgba(0,0,0,.12); }
-  .ticket .ref { font-size: 11px; color:#888; font-family: monospace; }
-
-  .info-line { display:flex; gap:8px; font-size: 13px; line-height:1.6; margin-bottom:8px; color:#333; }
-  .info-line:last-child { margin-bottom:0; }
-  .info-line b { color:#12172b; }
-
-  .noqr-box { background:#f4f0e4; border-radius:12px; padding:14px; text-align:center; }
-  .noqr-box .umbrella { font-size:30px; margin-bottom:6px; }
-  .noqr-box p { font-size:13px; line-height:1.6; color:#4a4232; }
-
-  .tdivider { height:1px; background:#f0e8cd; margin:14px 0; }
-
-  .tjue .day-head { background:#1f7a5c; } .tvie .day-head { background:#c94f3d; }
-  .tsab .day-head { background:#7a4fc9; } .tdom .day-head { background:#d6912a; }
-  .tlun .day-head { background:#2472a3; } .tdoc .day-head { background:#12172b; }
-
-  .subnav button.tjue { background:#1f7a5c; }
-  .subnav button.tvie { background:#c94f3d; }
-  .subnav button.tsab { background:#7a4fc9; }
-  .subnav button.tdom { background:#d6912a; }
-  .subnav button.tlun { background:#2472a3; }
-  .subnav button.tdoc { background:#12172b; }
-
-  /* Theme colors */
-  .mie { background:#1c2b4a; } .mie-block h3 { color:#1c2b4a; }
-  .jue { background:#1f7a5c; } .jue-block h3 { color:#1f7a5c; }
-  .vie { background:#c94f3d; } .vie-block h3 { color:#c94f3d; }
-  .sab { background:#7a4fc9; } .sab-block h3 { color:#7a4fc9; }
-  .dom { background:#d6912a; } .dom-block h3 { color:#d6912a; }
-  .lun { background:#2472a3; } .lun-block h3 { color:#2472a3; }
-  .mar { background:#b5286e; } .mar-block h3 { color:#b5286e; }
-
-  /* ---- INFO SECTION ---- */
-  .info {
-    margin: 24px 14px 10px 14px;
-    background: #12172b;
-    border-radius: 18px;
-    padding: 20px 18px;
-    color: #fff;
-  }
-  .info h2 { color:#f2a900; font-size: 20px; font-weight: 800; }
-  .info .sub2 { color:#9fb0d6; font-size: 11px; margin-top:2px; letter-spacing: 1px; margin-bottom: 14px; }
-  .icard {
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-  }
-  .icard h3 { font-size: 11.5px; color:#ffd873; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .icard p, .icard li { font-size: 12.5px; line-height: 1.65; color:#dfe6f5; }
-  .icard ul { margin-left: 14px; }
-  .ok { color:#7fe3a3; font-weight:700; }
-
-  .footer-note { text-align:center; font-size: 11px; color:#b8ac8a; padding: 18px 20px 4px 20px; }
+* { box-sizing: border-box; margin:0; padding:0; -webkit-tap-highlight-color: transparent; }
+body {
+font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+background: #fdf8ec;
+color: #1f2430;
+padding-bottom: 40px;
+}
+/* ---- HERO ---- */
+.hero {
+background: linear-gradient(160deg, #0b1f3a 0%, #12315c 50%, #f2a900 130%);
+color: #fff;
+padding: 34px 20px 78px 20px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.hero .emo { font-size: 26px; letter-spacing: 6px; }
+.hero h1 { font-size: 34px; font-weight: 800; letter-spacing: 2px; margin-top: 6px; }
+.hero .sub { font-size: 13px; opacity: .9; margin-top: 4px; letter-spacing: 1px; }
+.hero .fam {
+display:inline-block; margin-top: 16px; position: relative; z-index: 2;
+background: rgba(255,255,255,.15); border:1.5px solid #f2a900;
+border-radius: 30px; padding: 8px 20px; font-weight: 700; font-size: 15px;
+}
+.hero .emo, .hero h1, .hero .sub { position: relative; z-index: 2; }
+.hero .skyline { position:absolute; bottom:-2px; left:0; width:100%; opacity:.9; z-index: 1; }
+/* ---- NAV PILLS ---- */
+.navbar {
+position: sticky; top: 0; z-index: 50;
+background: #fdf8ec;
+display: flex; gap: 8px; overflow-x: auto;
+padding: 10px 14px; border-bottom: 1px solid #eee2c4;
+-webkit-overflow-scrolling: touch;
+}
+.navbar button {
+flex: 0 0 auto;
+text-decoration: none;
+font-size: 12px; font-weight: 800; color: #fff;
+padding: 7px 13px; border-radius: 20px; white-space: nowrap;
+filter: saturate(.55) brightness(.92);
+transition: filter .15s, transform .15s, box-shadow .15s;
+border: 2px solid transparent;
+cursor: pointer;
+font-family: inherit;
+-webkit-appearance: none;
+appearance: none;
+}
+.navbar button.active {
+filter: none;
+transform: scale(1.08);
+box-shadow: 0 3px 10px rgba(0,0,0,.25);
+border-color: rgba(255,255,255,.85);
+}
+/* ---- DAY CARD ---- */
+.day {
+margin: 18px 14px;
+border-radius: 18px;
+overflow: hidden;
+box-shadow: 0 4px 18px rgba(0,0,0,.10);
+scroll-margin-top: 60px;
+animation: fadeIn .25s ease;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.day.hidden { display: none; }
+.info.hidden { display: none; }
+.tickets-wrap.hidden { display: none; }
+.arrows {
+display: flex; justify-content: space-between;
+margin: 4px 14px 0 14px;
+}
+.arrows button {
+flex: 1; margin: 0 6px;
+border: none; border-radius: 12px;
+background: #12172b; color: #fff;
+font-size: 13px; font-weight: 700;
+padding: 12px 10px;
+font-family: inherit;
+cursor: pointer;
+}
+.arrows button:disabled { opacity: .3; }
+.day-head {
+color: #fff;
+padding: 18px 18px 16px 18px;
+position: relative;
+}
+.day-head .badge {
+display:inline-block; background: rgba(255,255,255,.22);
+border-radius: 20px; padding: 3px 12px; font-size: 11px;
+font-weight: 700; letter-spacing: 1.5px; margin-bottom: 6px;
+}
+.day-head h2 { font-size: 22px; font-weight: 800; line-height: 1.2; }
+.day-head .date { font-size: 12.5px; opacity: .92; margin-top: 3px; }
+.day-head .icon { position:absolute; right:16px; top:16px; font-size: 30px; }
+.day-body { background: #fff; padding: 14px 16px 18px 16px; }
+.block { margin-bottom: 14px; }
+.block:last-child { margin-bottom: 0; }
+.block h3 {
+font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+margin-bottom: 5px; display:flex; align-items:center; gap:6px;
+font-weight: 800;
+}
+.block p, .block li { font-size: 13.5px; line-height: 1.55; color: #3a3a3a; }
+.block ul { margin-left: 16px; margin-top: 2px; }
+.timeline {
+margin-top: 10px;
+background: #f4f0e4;
+border-radius: 12px;
+padding: 10px 14px;
+font-size: 12px;
+line-height: 1.9;
+color: #4a4232;
+}
+.timeline .lbl { font-weight: 800; }
+.highlight {
+background: #fff6de;
+border-left: 3px solid #f2a900;
+padding: 8px 10px;
+border-radius: 8px;
+font-size: 12.5px;
+margin-top: 6px;
+}
+/* ---- TICKET WALLET ---- */
+.tickets-wrap { margin: 0; }
+.subnav {
+display: flex; gap: 7px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+padding: 4px 14px 12px 14px;
+}
+.subnav button {
+flex: 0 0 auto; font-size: 11px; font-weight: 800; color:#fff;
+padding: 6px 11px; border-radius: 18px; white-space: nowrap;
+filter: saturate(.5) brightness(.9);
+transition: filter .15s, transform .15s, box-shadow .15s;
+border: 2px solid transparent; cursor:pointer; font-family: inherit;
+-webkit-appearance:none; appearance:none;
+}
+.subnav button.active { filter:none; transform:scale(1.08); box-shadow:0 3px 8px rgba(0,0,0,.22); border-color: rgba(255,255,255,.85); }
+.tsec { margin: 0 14px 18px 14px; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,.10); }
+.tsec.hidden { display:none; }
+.ticket { border: 1.5px dashed #d8cfa8; border-radius: 14px; padding: 14px; margin-bottom: 12px; text-align:center; }
+.ticket:last-child { margin-bottom: 0; }
+.ticket .who { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing:.5px; color:#444; margin-bottom: 8px; }
+.ticket img { width: 168px; height:auto; display:block; margin:0 auto 8px auto; border: 6px solid #fff; box-shadow: 0 1px 6px rgba(0,0,0,.12); }
+.ticket .ref { font-size: 11px; color:#888; font-family: monospace; }
+.info-line { display:flex; gap:8px; font-size: 13px; line-height:1.6; margin-bottom:8px; color:#333; }
+.info-line:last-child { margin-bottom:0; }
+.info-line b { color:#12172b; }
+.noqr-box { background:#f4f0e4; border-radius:12px; padding:14px; text-align:center; }
+.noqr-box .umbrella { font-size:30px; margin-bottom:6px; }
+.noqr-box p { font-size:13px; line-height:1.6; color:#4a4232; }
+.tdivider { height:1px; background:#f0e8cd; margin:14px 0; }
+.tjue .day-head { background:#1f7a5c; } .tvie .day-head { background:#c94f3d; }
+.tsab .day-head { background:#7a4fc9; } .tdom .day-head { background:#d6912a; }
+.tlun .day-head { background:#2472a3; } .tdoc .day-head { background:#12172b; }
+.subnav button.tjue { background:#1f7a5c; }
+.subnav button.tvie { background:#c94f3d; }
+.subnav button.tsab { background:#7a4fc9; }
+.subnav button.tdom { background:#d6912a; }
+.subnav button.tlun { background:#2472a3; }
+.subnav button.tdoc { background:#12172b; }
+/* Theme colors */
+.mie { background:#1c2b4a; } .mie-block h3 { color:#1c2b4a; }
+.jue { background:#1f7a5c; } .jue-block h3 { color:#1f7a5c; }
+.vie { background:#c94f3d; } .vie-block h3 { color:#c94f3d; }
+.sab { background:#7a4fc9; } .sab-block h3 { color:#7a4fc9; }
+.dom { background:#d6912a; } .dom-block h3 { color:#d6912a; }
+.lun { background:#2472a3; } .lun-block h3 { color:#2472a3; }
+.mar { background:#b5286e; } .mar-block h3 { color:#b5286e; }
+/* ---- INFO SECTION ---- */
+.info {
+margin: 24px 14px 10px 14px;
+background: #12172b;
+border-radius: 18px;
+padding: 20px 18px;
+color: #fff;
+}
+.info h2 { color:#f2a900; font-size: 20px; font-weight: 800; }
+.info .sub2 { color:#9fb0d6; font-size: 11px; margin-top:2px; letter-spacing: 1px; margin-bottom: 14px; }
+.icard {
+background: rgba(255,255,255,.06);
+border: 1px solid rgba(255,255,255,.12);
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 10px;
+}
+.icard h3 { font-size: 11.5px; color:#ffd873; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.icard p, .icard li { font-size: 12.5px; line-height: 1.65; color:#dfe6f5; }
+.icard ul { margin-left: 14px; }
+.ok { color:#7fe3a3; font-weight:700; }
+.footer-note { text-align:center; font-size: 11px; color:#b8ac8a; padding: 18px 20px 4px 20px; }
 </style>
 </head>
 <body>
-
 <div class="hero">
-  <svg class="skyline" viewBox="0 0 800 90" preserveAspectRatio="none" height="70">
-    <rect x="0" y="40" width="30" height="50" fill="#0b1f3a"/>
-    <rect x="35" y="25" width="25" height="65" fill="#0b1f3a"/>
-    <rect x="65" y="45" width="22" height="45" fill="#0b1f3a"/>
-    <polygon points="95,90 95,20 115,5 135,20 135,90" fill="#0b1f3a"/>
-    <rect x="140" y="35" width="25" height="55" fill="#0b1f3a"/>
-    <rect x="170" y="15" width="30" height="75" fill="#0b1f3a"/>
-    <rect x="205" y="40" width="22" height="50" fill="#0b1f3a"/>
-    <polygon points="235,90 235,10 250,10 262,30 262,90" fill="#0b1f3a"/>
-    <rect x="270" y="30" width="25" height="60" fill="#0b1f3a"/>
-    <rect x="300" y="48" width="20" height="42" fill="#0b1f3a"/>
-    <rect x="325" y="20" width="28" height="70" fill="#0b1f3a"/>
-    <rect x="360" y="40" width="22" height="50" fill="#0b1f3a"/>
-    <polygon points="390,90 390,15 405,15 418,35 418,90" fill="#0b1f3a"/>
-    <rect x="425" y="35" width="25" height="55" fill="#0b1f3a"/>
-    <rect x="455" y="48" width="20" height="42" fill="#0b1f3a"/>
-    <rect x="480" y="22" width="28" height="68" fill="#0b1f3a"/>
-    <rect x="515" y="40" width="22" height="50" fill="#0b1f3a"/>
-    <polygon points="545,90 545,12 560,12 573,32 573,90" fill="#0b1f3a"/>
-    <rect x="580" y="30" width="25" height="60" fill="#0b1f3a"/>
-    <rect x="610" y="48" width="20" height="42" fill="#0b1f3a"/>
-    <rect x="635" y="20" width="28" height="70" fill="#0b1f3a"/>
-    <rect x="670" y="40" width="22" height="50" fill="#0b1f3a"/>
-    <rect x="700" y="30" width="25" height="60" fill="#0b1f3a"/>
-    <rect x="730" y="48" width="20" height="42" fill="#0b1f3a"/>
-    <rect x="758" y="35" width="22" height="55" fill="#0b1f3a"/>
-  </svg>
-  <div class="emo">🗽 🚕 🍎 🎡 🦖</div>
-  <h1>NEW YORK</h1>
-  <div class="sub">2 – 8 septiembre 2026 · 7 días</div>
-  <div class="fam">👨‍👩‍👦 Familia Díaz Novel</div>
+<svg class="skyline" viewBox="0 0 800 90" preserveAspectRatio="none" height="70">
+<rect x="0" y="40" width="30" height="50" fill="#0b1f3a"/>
+<rect x="35" y="25" width="25" height="65" fill="#0b1f3a"/>
+<rect x="65" y="45" width="22" height="45" fill="#0b1f3a"/>
+<polygon points="95,90 95,20 115,5 135,20 135,90" fill="#0b1f3a"/>
+<rect x="140" y="35" width="25" height="55" fill="#0b1f3a"/>
+<rect x="170" y="15" width="30" height="75" fill="#0b1f3a"/>
+<rect x="205" y="40" width="22" height="50" fill="#0b1f3a"/>
+<polygon points="235,90 235,10 250,10 262,30 262,90" fill="#0b1f3a"/>
+<rect x="270" y="30" width="25" height="60" fill="#0b1f3a"/>
+<rect x="300" y="48" width="20" height="42" fill="#0b1f3a"/>
+<rect x="325" y="20" width="28" height="70" fill="#0b1f3a"/>
+<rect x="360" y="40" width="22" height="50" fill="#0b1f3a"/>
+<polygon points="390,90 390,15 405,15 418,35 418,90" fill="#0b1f3a"/>
+<rect x="425" y="35" width="25" height="55" fill="#0b1f3a"/>
+<rect x="455" y="48" width="20" height="42" fill="#0b1f3a"/>
+<rect x="480" y="22" width="28" height="68" fill="#0b1f3a"/>
+<rect x="515" y="40" width="22" height="50" fill="#0b1f3a"/>
+<polygon points="545,90 545,12 560,12 573,32 573,90" fill="#0b1f3a"/>
+<rect x="580" y="30" width="25" height="60" fill="#0b1f3a"/>
+<rect x="610" y="48" width="20" height="42" fill="#0b1f3a"/>
+<rect x="635" y="20" width="28" height="70" fill="#0b1f3a"/>
+<rect x="670" y="40" width="22" height="50" fill="#0b1f3a"/>
+<rect x="700" y="30" width="25" height="60" fill="#0b1f3a"/>
+<rect x="730" y="48" width="20" height="42" fill="#0b1f3a"/>
+<rect x="758" y="35" width="22" height="55" fill="#0b1f3a"/>
+</svg>
+<div class="emo">🗽 🚕 🍎 🎡 🦖</div>
+<h1>NEW YORK</h1>
+<div class="sub">2 – 8 septiembre 2026 · 7 días</div>
+<div class="fam">👨‍👩‍👦 Familia Díaz Novel</div>
 </div>
-
 <div class="navbar" id="navbar">
-  <button type="button" class="mie active" data-target="d1">MIÉ 2</button>
-  <button type="button" class="jue" data-target="d2">JUE 3</button>
-  <button type="button" class="vie" data-target="d3">VIE 4</button>
-  <button type="button" class="sab" data-target="d4">SÁB 5</button>
-  <button type="button" class="dom" data-target="d5">DOM 6</button>
-  <button type="button" class="lun" data-target="d6">LUN 7</button>
-  <button type="button" class="mar" data-target="d7">MAR 8</button>
-  <button type="button" style="background:#12172b;" data-target="info">INFO</button>
-  <button type="button" style="background:#8a1f4b;" data-target="tickets">🎟️ BILLETES</button>
+<button type="button" class="mie active" data-target="d1">MIÉ 2</button>
+<button type="button" class="jue" data-target="d2">JUE 3</button>
+<button type="button" class="vie" data-target="d3">VIE 4</button>
+<button type="button" class="sab" data-target="d4">SÁB 5</button>
+<button type="button" class="dom" data-target="d5">DOM 6</button>
+<button type="button" class="lun" data-target="d6">LUN 7</button>
+<button type="button" class="mar" data-target="d7">MAR 8</button>
+<button type="button" style="background:#12172b;" data-target="info">INFO</button>
+<button type="button" style="background:#8a1f4b;" data-target="tickets">🎟️ BILLETES</button>
 </div>
-
-<!-- DÍA 1 -->
 <div class="day" id="d1">
-  <div class="day-head mie">
-    <div class="badge">DÍA 1 · LLEGADA</div>
-    <h2>Miércoles 2 septiembre</h2>
-    <div class="date">Times Square · Rockefeller · Quinta Av.</div>
-    <div class="icon">✈️</div>
-  </div>
-  <div class="day-body">
-    <div class="block mie-block">
-      <h3>✈️ Llegada</h3>
-      <p>Vuelo AGP–EWR (UA351), aterrizaje 12:10.</p>
-    </div>
-    <div class="block mie-block">
-      <h3>🚕 Opción A — Uber</h3>
-      <p>Recogida en <b>Terminal C, planta 3 del garaje</b> (seguir carteles "Arrivals Level 1" → Terminal C Parking → puente peatonal, no se coge en la puerta). UberX ~69$ el coche completo (hasta 4 personas), 35-45 min hasta el hotel. Precio calculado ya para ese vuelo y esa hora, puede variar algo antes del viaje.</p>
-    </div>
-    <div class="block mie-block">
-      <h3>🚌 Opción B — Bus</h3>
-      <p>Newark Airport Express desde la terminal hasta <b>Port Authority</b> (calle 41, entre 8ª y 9ª Ave), ~18-23$/persona, 45-50 min. Desde ahí, caminar 5-7 min hasta el Row NYC.</p>
-    </div>
-    <div class="block mie-block">
-      <h3>🏨 Check-in</h3>
-      <p>Row NYC, Times Square.</p>
-    </div>
-    <div class="block mie-block">
-      <h3>🛍️ Times Square</h3>
-      <ul>
-        <li>House of Spells (234 W 42nd St)</li>
-        <li>tm:rw — tienda de tecnología (misma manzana)</li>
-        <li>M&M's World y Hershey's</li>
-      </ul>
-    </div>
-    <div class="block mie-block">
-      <h3>🏙️ Quinta Avenida</h3>
-      <ul>
-        <li>Plaza Hotel y Apple Store</li>
-        <li>Nike House of Innovation (650 Fifth Ave)</li>
-        <li>Rockefeller Center: Nintendo NY, LEGO Store, FAO Schwarz</li>
-      </ul>
-    </div>
-    <div class="block mie-block">
-      <h3>🍽️ Cena</h3>
-      <p>Ellen's Stardust Diner</p>
-    </div>
-    <div class="block mie-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d1" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head mie">
+<div class="badge">DÍA 1 · LLEGADA</div>
+<h2>Miércoles 2 septiembre</h2>
+<div class="date">Times Square · Rockefeller · Quinta Av.</div>
+<div class="icon">✈️</div>
 </div>
-
-<!-- DÍA 2 -->
+<div class="day-body">
+<div class="block mie-block">
+<h3>✈️ Llegada</h3>
+<p>Vuelo AGP–EWR (UA351), aterrizaje 12:10.</p>
+</div>
+<div class="block mie-block">
+<h3>🚕 Opción A — Uber</h3>
+<p>Recogida en <b>Terminal C, planta 3 del garaje</b> (seguir carteles "Arrivals Level 1" → Terminal C Parking → puente peatonal, no se coge en la puerta). UberX ~69$ el coche completo (hasta 4 personas), 35-45 min hasta el hotel. Precio calculado ya para ese vuelo y esa hora, puede variar algo antes del viaje.</p>
+</div>
+<div class="block mie-block">
+<h3>🚌 Opción B — Bus</h3>
+<p>Newark Airport Express desde la terminal hasta <b>Port Authority</b> (calle 41, entre 8ª y 9ª Ave), ~18-23$/persona, 45-50 min. Desde ahí, caminar 5-7 min hasta el Row NYC.</p>
+</div>
+<div class="block mie-block">
+<h3>🏨 Check-in</h3>
+<p>Row NYC, Times Square.</p>
+</div>
+<div class="block mie-block">
+<h3>🛍️ Times Square</h3>
+<ul>
+<li>House of Spells (234 W 42nd St)</li>
+<li>tm:rw — tienda de tecnología (misma manzana)</li>
+<li>M&M's World y Hershey's</li>
+</ul>
+</div>
+<div class="block mie-block">
+<h3>🏙️ Quinta Avenida</h3>
+<ul>
+<li>Plaza Hotel y Apple Store</li>
+<li>Nike House of Innovation (650 Fifth Ave)</li>
+<li>Rockefeller Center: Nintendo NY, LEGO Store, FAO Schwarz</li>
+</ul>
+</div>
+<div class="block mie-block">
+<h3>🍽️ Cena</h3>
+<p>Ellen's Stardust Diner</p>
+</div>
+<div class="block mie-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d1" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d2">
-  <div class="day-head jue">
-    <div class="badge">DÍA 2</div>
-    <h2>Jueves 3 septiembre</h2>
-    <div class="date">Historia Natural · Central Park · Chelsea</div>
-    <div class="icon">🦕</div>
-  </div>
-  <div class="day-body">
-    <div class="block jue-block">
-      <h3>🦖 Mañana — AMNH</h3>
-      <p>Apertura 10:00. Comida por Columbus/Amsterdam. Paseo por Central Park.</p>
-    </div>
-    <div class="block jue-block">
-      <h3>🚇 Metro — ida al museo</h3>
-      <p>Estación <b>42 St-Port Authority</b> (2-3 min del hotel) → línea <b>C dirección norte</b> hasta <b>81 St-Museum of Natural History</b>, sin transbordos, la parada deja en la puerta del museo. ~15-18 min.</p>
-    </div>
-    <div class="block jue-block">
-      <h3>🌆 Tarde — High Line</h3>
-      <p>Descanso en hotel. Free tour RESERVADO 18:00 (2-2,5h, punto de encuentro W 34th St &amp; Hudson Blvd, guía con paraguas púrpura). Cena en Market 57.</p>
-    </div>
-    <div class="block jue-block">
-      <h3>🚇 Metro — ida a Hudson Yards</h3>
-      <p>Línea <b>7</b> desde <b>Times Square-42 St</b> hasta <b>34th St-Hudson Yards</b>, ~10 min.</p>
-    </div>
-    <div class="block jue-block">
-      <h3>🚇 Metro — vuelta al hotel</h3>
-      <p>Desde Market 57, caminar hasta <b>14 St-8 Av</b> (10-15 min) → línea <b>A/C/E dirección uptown</b> hasta <b>42 St-Port Authority</b> (5-7 min) → caminar 2-3 min al hotel.</p>
-    </div>
-    <div class="timeline">
-      <span class="lbl">10:00</span> Museo · <span class="lbl">12:30</span> Comida · <span class="lbl">13:30</span> Central Park<br>
-      <span class="lbl">18:00</span> Free tour · <span class="lbl">20:30</span> Cena Market 57
-    </div>
-    <div class="block jue-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d2" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head jue">
+<div class="badge">DÍA 2</div>
+<h2>Jueves 3 septiembre</h2>
+<div class="date">Central Park · Historia Natural · High Line</div>
+<div class="icon">🦕</div>
 </div>
-
-<!-- DÍA 3 -->
+<div class="day-body">
+<div class="block jue-block">
+<h3>🌳 Mañana — Free Tour Central Park</h3>
+<p>RESERVADO 9:30 (2-2,5h). Encuentro <b>15 min antes</b> frente a la escultura de José Martí, <b>W 59th St &amp; Center Drive</b>.</p>
+</div>
+<div class="block jue-block">
+<h3>🚇 Metro — ida al free tour</h3>
+<p>Línea <b>1</b> desde <b>Times Square-42 St</b>, dirección uptown, hasta <b>59 St-Columbus Circle</b> (3 paradas, ~8-10 min) → caminar 2-3 min hasta la escultura de José Martí.</p>
+</div>
+<div class="block jue-block">
+<h3>🦖 Museo — AMNH</h3>
+<p>Al terminar el tour, caminar hasta el museo (10-15 min por el lado oeste del parque). Entrada con Go City Explorer.</p>
+</div>
+<div class="block jue-block">
+<h3>🏨 Vuelta al hotel — comer y descansar</h3>
+<p>Desde <b>81 St-Museum of Natural History</b> → línea <b>B/C dirección sur</b> hasta <b>42 St-Port Authority</b> (~15 min) → caminar 2-3 min al hotel. Comida y descanso.</p>
+</div>
+<div class="block jue-block">
+<h3>🌆 Tarde — High Line</h3>
+<p>Free tour RESERVADO 18:00 (2-2,5h, punto de encuentro W 34th St &amp; Hudson Blvd, guía con paraguas púrpura). Cena en Market 57.</p>
+</div>
+<div class="block jue-block">
+<h3>🚇 Metro — ida a Hudson Yards</h3>
+<p>Línea <b>7</b> desde <b>Times Square-42 St</b> hasta <b>34th St-Hudson Yards</b>, ~10 min.</p>
+</div>
+<div class="block jue-block">
+<h3>🚕 Vuelta al hotel — Uber</h3>
+<p>Tras la cena en Market 57, Uber directo al hotel (más cómodo de noche y sin transbordos tras el día completo).</p>
+</div>
+<div class="timeline">
+<span class="lbl">9:30</span> Free tour Central Park · <span class="lbl">12:00</span> AMNH<br>
+<span class="lbl">14:00</span> Comida y descanso en hotel · <span class="lbl">18:00</span> Free tour High Line · <span class="lbl">20:30</span> Cena Market 57 · Uber
+</div>
+<div class="block jue-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d2" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d3">
-  <div class="day-head vie">
-    <div class="badge">DÍA 3</div>
-    <h2>Viernes 4 septiembre</h2>
-    <div class="date">Zoo · Midtown · Summit One Vanderbilt</div>
-    <div class="icon">🐒</div>
-  </div>
-  <div class="day-body">
-    <div class="block vie-block">
-      <h3>🐧 Mañana</h3>
-      <p>Zoo de Central Park (10:00-11:30, entradas online).</p>
-      <div class="highlight">🎃 Spirit Halloween — 999 3rd Ave (esquina calle 59-60), de camino entre el zoo y el teleférico</div>
-      <p style="margin-top:6px;">Teleférico de Roosevelt Island ida y vuelta (30-40 min).</p>
-    </div>
-    <div class="block vie-block">
-      <h3>🚇 Metro — ida al zoo</h3>
-      <p>Línea <b>N/R/W</b> hasta <b>5 Ave-59 St</b> → caminar hasta el Teleférico de Roosevelt Island (2ª Avenida/calle 59-60, 15-18 min).</p>
-    </div>
-    <div class="block vie-block">
-      <h3>📚 Mediodía</h3>
-      <p>Biblioteca Pública / Bryant Park, foto en Grand Central. Comida rápida.</p>
-    </div>
-    <div class="block vie-block">
-      <h3>🚇 Metro — hacia Midtown</h3>
-      <p>Línea <b>4/5/6</b> desde <b>Lexington Ave/59 St</b>.</p>
-    </div>
-    <div class="block vie-block">
-      <h3>🌇 Tarde</h3>
-      <p>Summit One Vanderbilt RESERVADO 14:30. Macy's → Flatiron Building.</p>
-      <div class="highlight">🛍️ Macy's — el pasaporte turístico (Visitor Savings Pass) se recoge en el <b>Mezzanine</b>. Planta 8 = <b>Macy's Backstage</b> (outlet). Planta 7 = juguetes.</div>
-      <div class="highlight">⚡ Harry Potter Store — 935 Broadway</div>
-      <div class="highlight">🎃 Abracadabra NYC — tienda de disfraces y magia, 19 W 21st St, a 3-4 manzanas del Flatiron</div>
-      <p style="margin-top:6px;">Continúa con el resto del día. Opcional: 230 Fifth rooftop.</p>
-    </div>
-    <div class="block vie-block">
-      <h3>🚇 Metro — vuelta al hotel</h3>
-      <p>Desde <b>34 St-Herald Sq</b> hasta <b>Times Sq-42 St</b>.</p>
-    </div>
-    <div class="timeline">
-      <span class="lbl">10:00</span> Zoo · <span class="lbl">11:15</span> Spirit Halloween · <span class="lbl">11:48</span> Teleférico · <span class="lbl">13:00</span> Comida<br>
-      <span class="lbl">14:30</span> Summit One Vanderbilt · <span class="lbl">16:00</span> Macy's · <span class="lbl">16:30</span> Flatiron · <span class="lbl">16:45</span> Harry Potter Store · <span class="lbl">17:05</span> Abracadabra
-    </div>
-    <div class="block vie-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d3" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head vie">
+<div class="badge">DÍA 3</div>
+<h2>Viernes 4 septiembre</h2>
+<div class="date">Zoo · Midtown · Summit One Vanderbilt</div>
+<div class="icon">🐒</div>
 </div>
-
-<!-- DÍA 4 -->
+<div class="day-body">
+<div class="block vie-block">
+<h3>🐧 Mañana</h3>
+<p>Zoo de Central Park (10:00-11:30, entradas online).</p>
+<div class="highlight">🎃 Spirit Halloween — 999 3rd Ave (esquina calle 59-60), de camino entre el zoo y el teleférico</div>
+<p style="margin-top:6px;">Teleférico de Roosevelt Island ida y vuelta (30-40 min).</p>
+</div>
+<div class="block vie-block">
+<h3>🚇 Metro — ida al zoo</h3>
+<p>Línea <b>N/R/W</b> hasta <b>5 Ave-59 St</b> → caminar hasta el Teleférico de Roosevelt Island (2ª Avenida/calle 59-60, 15-18 min).</p>
+</div>
+<div class="block vie-block">
+<h3>📚 Mediodía</h3>
+<p>Biblioteca Pública / Bryant Park, foto en Grand Central. Comida rápida.</p>
+</div>
+<div class="block vie-block">
+<h3>🚇 Metro — hacia Midtown</h3>
+<p>Línea <b>4/5/6</b> desde <b>Lexington Ave/59 St</b>.</p>
+</div>
+<div class="block vie-block">
+<h3>🌇 Tarde</h3>
+<p>Summit One Vanderbilt RESERVADO 14:30. Macy's → Flatiron Building.</p>
+<div class="highlight">🛍️ Macy's — el pasaporte turístico (Visitor Savings Pass) se recoge en el <b>Mezzanine</b>. Planta 8 = <b>Macy's Backstage</b> (outlet). Planta 7 = juguetes.</div>
+<div class="highlight">⚡ Harry Potter Store — 935 Broadway</div>
+<div class="highlight">🎃 Abracadabra NYC — tienda de disfraces y magia, 19 W 21st St, a 3-4 manzanas del Flatiron</div>
+<p style="margin-top:6px;">Continúa con el resto del día. Opcional: 230 Fifth rooftop.</p>
+</div>
+<div class="block vie-block">
+<h3>🚇 Metro — vuelta al hotel</h3>
+<p>Desde <b>34 St-Herald Sq</b> hasta <b>Times Sq-42 St</b>.</p>
+</div>
+<div class="timeline">
+<span class="lbl">10:00</span> Zoo · <span class="lbl">11:15</span> Spirit Halloween · <span class="lbl">11:48</span> Teleférico · <span class="lbl">13:00</span> Comida<br>
+<span class="lbl">14:30</span> Summit One Vanderbilt · <span class="lbl">16:00</span> Macy's · <span class="lbl">16:30</span> Flatiron · <span class="lbl">16:45</span> Harry Potter Store · <span class="lbl">17:05</span> Abracadabra
+</div>
+<div class="block vie-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d3" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d4">
-  <div class="day-head sab">
-    <div class="badge">DÍA 4</div>
-    <h2>Sábado 5 septiembre</h2>
-    <div class="date">SoHo · Chinatown · Mercer Labs · DUMBO</div>
-    <div class="icon">🎨</div>
-  </div>
-  <div class="day-body">
-    <div class="block sab-block">
-      <h3>🚶 Mañana</h3>
-      <p>Free tour SoHo/Chinatown RESERVADO (11:00-13:00), inicio en Foley Square, fin en Gunther Building.</p>
-    </div>
-    <div class="block sab-block">
-      <h3>🚇 Metro — ida al free tour</h3>
-      <p>Línea <b>N/Q/R/W</b> desde <b>Times Square-42 St</b> hasta <b>Canal St</b>, sin transbordos (15-18 min) → caminar 5-7 min hasta Foley Square.</p>
-    </div>
-    <div class="block sab-block">
-      <h3>🛍️ Compras y comida</h3>
-      <div class="highlight">👟 New Balance — 542 Broadway, SoHo</div>
-
-      <div class="highlight">🎄 Christmas in New York — 142 Mulberry St, Little Italy (tienda de Navidad abierta todo el año)</div>
-      <p style="margin-top:6px;">Comer por la zona.</p>
-    </div>
-    <div class="block sab-block">
-      <h3>🔬 Tarde</h3>
-      <p>Mercer Labs (21 Dey St, junto al Oculus), 1-1,5h. Puente de Brooklyn → DUMBO: Jane's Carousel, Brooklyn Bridge Park, Pebble Beach. Cena en Time Out Market.</p>
-    </div>
-    <div class="block sab-block">
-      <h3>🚇 Metro — vuelta al hotel</h3>
-      <p>Desde DUMBO caminar hasta la estación <b>York St</b> → línea <b>F dirección Manhattan</b> hasta <b>34 St-Herald Sq</b> → caminar hasta el hotel (10-12 min).</p>
-    </div>
-    <div class="timeline">
-      <span class="lbl">11:00</span> Free tour · <span class="lbl">13:00</span> New Balance · <span class="lbl">13:20</span> Christmas in New York · <span class="lbl">13:30</span> Comida<br>
-      <span class="lbl">16:00</span> Puente Brooklyn · <span class="lbl">16:45</span> DUMBO · <span class="lbl">18:30</span> Cena
-    </div>
-    <div class="block sab-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d4" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head sab">
+<div class="badge">DÍA 4</div>
+<h2>Sábado 5 septiembre</h2>
+<div class="date">SoHo · Chinatown · Mercer Labs · DUMBO</div>
+<div class="icon">🎨</div>
 </div>
-
-<!-- DÍA 5 -->
+<div class="day-body">
+<div class="block sab-block">
+<h3>🚶 Mañana</h3>
+<p>Free tour SoHo/Chinatown RESERVADO (11:00-13:00), inicio en Foley Square, fin en Gunther Building.</p>
+</div>
+<div class="block sab-block">
+<h3>🚇 Metro — ida al free tour</h3>
+<p>Línea <b>N/Q/R/W</b> desde <b>Times Square-42 St</b> hasta <b>Canal St</b>, sin transbordos (15-18 min) → caminar 5-7 min hasta Foley Square.</p>
+</div>
+<div class="block sab-block">
+<h3>🛍️ Compras y comida</h3>
+<div class="highlight">👟 New Balance — 542 Broadway, SoHo</div>
+<div class="highlight">🎄 Christmas in New York — 142 Mulberry St, Little Italy (tienda de Navidad abierta todo el año)</div>
+<p style="margin-top:6px;">Comer por la zona.</p>
+</div>
+<div class="block sab-block">
+<h3>🔬 Tarde</h3>
+<p>Mercer Labs (21 Dey St, junto al Oculus), 1-1,5h. Puente de Brooklyn → DUMBO: Jane's Carousel, Brooklyn Bridge Park, Pebble Beach. Cena en Time Out Market.</p>
+</div>
+<div class="block sab-block">
+<h3>🚇 Metro — vuelta al hotel</h3>
+<p>Desde DUMBO caminar hasta la estación <b>York St</b> → línea <b>F dirección Manhattan</b> hasta <b>34 St-Herald Sq</b> → caminar hasta el hotel (10-12 min).</p>
+</div>
+<div class="timeline">
+<span class="lbl">11:00</span> Free tour · <span class="lbl">13:00</span> New Balance · <span class="lbl">13:20</span> Christmas in New York · <span class="lbl">13:30</span> Comida<br>
+<span class="lbl">16:00</span> Puente Brooklyn · <span class="lbl">16:45</span> DUMBO · <span class="lbl">18:30</span> Cena
+</div>
+<div class="block sab-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d4" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d5">
-  <div class="day-head dom">
-    <div class="badge">DÍA 5 · DÍA COMPLETO</div>
-    <h2>Domingo 6 septiembre</h2>
-    <div class="date">Legoland New York</div>
-    <div class="icon">🧱</div>
-  </div>
-  <div class="day-body">
-    <div class="block dom-block">
-      <h3>🚌 Ida</h3>
-      <p>Coach USA desde Port Authority, Gate 409, 4º piso. 8:30 / 9:30 / 10:30.</p>
-    </div>
-    <div class="block dom-block">
-      <h3>🎡 Día completo</h3>
-      <p>Jornada completa en el parque.</p>
-    </div>
-    <div class="block dom-block">
-      <h3>🚌 Vuelta</h3>
-      <p>15:45 / 17:00 / 18:15. Opción: cena en Little Spain.</p>
-    </div>
-    <div class="block dom-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d5" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head dom">
+<div class="badge">DÍA 5 · DÍA COMPLETO</div>
+<h2>Domingo 6 septiembre</h2>
+<div class="date">Legoland New York</div>
+<div class="icon">🧱</div>
 </div>
-
-<!-- DÍA 6 -->
+<div class="day-body">
+<div class="block dom-block">
+<h3>🚌 Ida</h3>
+<p>Coach USA desde Port Authority, Gate 409, 4º piso. 8:30 / 9:30 / 10:30.</p>
+</div>
+<div class="block dom-block">
+<h3>🎡 Día completo</h3>
+<p>Jornada completa en el parque.</p>
+</div>
+<div class="block dom-block">
+<h3>🚌 Vuelta</h3>
+<p>15:45 / 17:00 / 18:15. Opción: cena en Little Spain.</p>
+</div>
+<div class="block dom-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d5" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d6">
-  <div class="day-head lun">
-    <div class="badge">DÍA 6</div>
-    <h2>Lunes 7 septiembre</h2>
-    <div class="date">Tour de Contrastes · Sur de Manhattan</div>
-    <div class="icon">🐂</div>
-  </div>
-  <div class="day-body">
-    <div class="block lun-block">
-      <h3>🚐 Mañana</h3>
-      <p>Tour de Contrastes 9:00-14:00. Encuentro: Hotel The Manhattan at Times Sq, 790 7th Ave. Final en Chinatown.</p>
-    </div>
-    <div class="block lun-block">
-      <h3>🏛️ Tarde</h3>
-      <p>City Hall → Freedom Tower → Oculus → Trinity Church → Wall Street → Charging Bull → Battery Park → Ferry Staten Island (opcional, gratis, vistas Estatua de la Libertad).</p>
-    </div>
-    <div class="block lun-block">
-      <h3>🚇 Metro — vuelta al hotel</h3>
-      <p>Línea <b>R o W</b> desde <b>Whitehall St, dirección norte</b>, hasta <b>Times Square-42 St</b> (25-30 min).</p>
-    </div>
-    <div class="timeline">
-      <span class="lbl">9:00</span> Tour · <span class="lbl">14:15</span> Comida · <span class="lbl">15:15</span> City Hall<br>
-      <span class="lbl">16:30</span> Trinity Church · <span class="lbl">17:00</span> Wall St · <span class="lbl">18:15</span> Ferry
-    </div>
-    <div class="block lun-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d6" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head lun">
+<div class="badge">DÍA 6</div>
+<h2>Lunes 7 septiembre</h2>
+<div class="date">Tour de Contrastes · Sur de Manhattan</div>
+<div class="icon">🐂</div>
 </div>
-
-<!-- DÍA 7 -->
+<div class="day-body">
+<div class="block lun-block">
+<h3>🚐 Mañana</h3>
+<p>Tour de Contrastes 9:00-14:00. Encuentro: Hotel The Manhattan at Times Sq, 790 7th Ave. Final en Chinatown.</p>
+</div>
+<div class="block lun-block">
+<h3>🏛️ Tarde</h3>
+<p>City Hall → Freedom Tower → Oculus → Trinity Church → Wall Street → Charging Bull → Battery Park → Ferry Staten Island (opcional, gratis, vistas Estatua de la Libertad).</p>
+</div>
+<div class="block lun-block">
+<h3>🚇 Metro — vuelta al hotel</h3>
+<p>Línea <b>R o W</b> desde <b>Whitehall St, dirección norte</b>, hasta <b>Times Square-42 St</b> (25-30 min).</p>
+</div>
+<div class="timeline">
+<span class="lbl">9:00</span> Tour · <span class="lbl">14:15</span> Comida · <span class="lbl">15:15</span> City Hall<br>
+<span class="lbl">16:30</span> Trinity Church · <span class="lbl">17:00</span> Wall St · <span class="lbl">18:15</span> Ferry
+</div>
+<div class="block lun-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d6" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="day hidden" id="d7">
-  <div class="day-head mar">
-    <div class="badge">DÍA 7 · SALIDA</div>
-    <h2>Martes 8 septiembre</h2>
-    <div class="date">Madame Tussauds · Vuelta a Málaga</div>
-    <div class="icon">🕯️</div>
-  </div>
-  <div class="day-body">
-    <div class="block mar-block">
-      <h3>🎭 Mañana</h3>
-      <p>Madame Tussauds, zona Marvel incluida (Hall of Heroes + 4D). Recorrido ágil ~90 min.</p>
-    </div>
-    <div class="block mar-block">
-      <h3>🚶 Último paseo</h3>
-      <p>Según el tiempo disponible: última vuelta por Times Square, o repetir por Biblioteca Pública / Grand Central Terminal por si se vieron demasiado rápido el jueves.</p>
-    </div>
-    <div class="block mar-block">
-      <h3>🍽️ Comida</h3>
-      <div class="highlight">⏰ A las 14:00 hay que estar ya comidos y listos para salir hacia el aeropuerto — calcular la comida con margen antes de esa hora.</div>
-    </div>
-    <div class="block mar-block">
-      <h3>🚌 Opción A — Bus</h3>
-      <p>Newark Airport Express desde <b>Port Authority</b> (calle 41, entre 8ª y 9ª Ave) a las 14:20 → llegada a Newark 15:10.</p>
-    </div>
-    <div class="block mar-block">
-      <h3>🚕 Opción B — Uber</h3>
-      <p>Recogida en la puerta del Row NYC, directo a <b>Terminal C</b> (dejada en acera, más simple que la recogida de la ida). Salir del hotel sobre las 13:30-13:45 para tener el mismo margen (35-45 min de trayecto + imprevistos).</p>
-    </div>
-    <div class="block mar-block">
-      <h3>✈️ Vuelo</h3>
-      <p>Vuelo EWR–AGP (UA350) 18:05.</p>
-      <div class="highlight">Margen de casi 3h hasta el vuelo</div>
-    </div>
-    <div class="block mar-block">
-      <h3>🗺️ Mapa del día</h3>
-      <div id="map-d7" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
-    </div>
-  </div>
+<div class="day-head mar">
+<div class="badge">DÍA 7 · SALIDA</div>
+<h2>Martes 8 septiembre</h2>
+<div class="date">Madame Tussauds · Vuelta a Málaga</div>
+<div class="icon">🕯️</div>
 </div>
-
-<!-- INFO -->
+<div class="day-body">
+<div class="block mar-block">
+<h3>🎭 Mañana</h3>
+<p>Madame Tussauds, zona Marvel incluida (Hall of Heroes + 4D). Recorrido ágil ~90 min.</p>
+</div>
+<div class="block mar-block">
+<h3>🚶 Último paseo</h3>
+<p>Según el tiempo disponible: última vuelta por Times Square, o repetir por Biblioteca Pública / Grand Central Terminal por si se vieron demasiado rápido el jueves.</p>
+</div>
+<div class="block mar-block">
+<h3>🍽️ Comida</h3>
+<div class="highlight">⏰ A las 14:00 hay que estar ya comidos y listos para salir hacia el aeropuerto — calcular la comida con margen antes de esa hora.</div>
+</div>
+<div class="block mar-block">
+<h3>🚌 Opción A — Bus</h3>
+<p>Newark Airport Express desde <b>Port Authority</b> (calle 41, entre 8ª y 9ª Ave) a las 14:20 → llegada a Newark 15:10.</p>
+</div>
+<div class="block mar-block">
+<h3>🚕 Opción B — Uber</h3>
+<p>Recogida en la puerta del Row NYC, directo a <b>Terminal C</b> (dejada en acera, más simple que la recogida de la ida). Salir del hotel sobre las 13:30-13:45 para tener el mismo margen (35-45 min de trayecto + imprevistos).</p>
+</div>
+<div class="block mar-block">
+<h3>✈️ Vuelo</h3>
+<p>Vuelo EWR–AGP (UA350) 18:05.</p>
+<div class="highlight">Margen de casi 3h hasta el vuelo</div>
+</div>
+<div class="block mar-block">
+<h3>🗺️ Mapa del día</h3>
+<div id="map-d7" style="height:280px;border-radius:12px;overflow:hidden;margin-top:6px;"></div>
+</div>
+</div>
+</div>
 <div class="info hidden" id="info">
-  <h2>Información práctica</h2>
-  <div class="sub2">TODO LO QUE HAY QUE TENER A MANO</div>
-
-  <div class="icard">
-    <h3>✅ Entradas compradas</h3>
-    <ul>
-      <li>Go City Explorer (AMNH, Mercer Labs, Madame Tussauds) — 280,25€ <span class="ok">COMPRADO</span></li>
-      <li>Zoo Central Park (4 sept) — 50,31€</li>
-      <li>Summit One Vanderbilt (4 sept, 14:30) — 152,41€ <span class="ok">COMPRADO</span></li>
-      <li>Legoland + bus (6 sept) — 244,06€ <span class="ok">COMPRADO</span></li>
-      <li>Tour de Contrastes (7 sept) — 96€ <span class="ok">COMPRADO</span></li>
-    </ul>
-  </div>
-
-  <div class="icard">
-    <h3>✈️ Vuelos</h3>
-    <p>Ida: AGP → EWR, UA351, 12:10<br>
-    Vuelta: EWR → AGP, UA350, 18:05<br>
-    Localizador United: DHH4N0<br>
-    Localizador Lufthansa: 8RACJM</p>
-  </div>
-
-  <div class="icard">
-    <h3>🕐 Diferencia horaria</h3>
-    <p>Nueva York va <b>6 horas por detrás</b> de España durante estas fechas (ambos países en horario de verano). Cuando en España son las 18:00, en Nueva York son las 12:00.</p>
-    <p style="margin-top:6px;"><b>Ida (2 sept):</b> salida de Málaga 09:35 (hora España) → llegada a Newark 12:10 (hora NY), que equivale a las 18:10 hora España.</p>
-    <p style="margin-top:6px;"><b>Vuelta (8 sept):</b> salida de Newark 18:05 (hora NY) → llegada a Málaga 07:35 del día siguiente (hora España).</p>
-  </div>
-
-  <div class="icard">
-    <h3>🚌 Bus aeropuerto</h3>
-    <p>Newark Airport Express — Port Authority (calle 41, entre 8ª y 9ª Ave). Recomendado 8/9: bus 14:20 → llegada 15:10, margen de casi 3h.</p>
-  </div>
-
-  <div class="icard">
-    <h3>📶 eSIM</h3>
-    <p>Saily 5GB/persona — 12,49€/persona.</p>
-  </div>
-
-  <div class="icard">
-    <h3>💳 Pagos</h3>
-    <p>Revolut cuenta conjunta (Google Pay) como método principal.</p>
-  </div>
-
-  <div class="icard">
-    <h3>🏨 Alojamiento</h3>
-    <p>Row NYC, Times Square. Desayuno incluido.</p>
-  </div>
+<h2>Información práctica</h2>
+<div class="sub2">TODO LO QUE HAY QUE TENER A MANO</div>
+<div class="icard">
+<h3>✅ Entradas compradas</h3>
+<ul>
+<li>Go City Explorer (AMNH, Mercer Labs, Madame Tussauds) — 280,25€ <span class="ok">COMPRADO</span></li>
+<li>Zoo Central Park (4 sept) — 50,31€</li>
+<li>Summit One Vanderbilt (4 sept, 14:30) — 152,41€ <span class="ok">COMPRADO</span></li>
+<li>Legoland + bus (6 sept) — 244,06€ <span class="ok">COMPRADO</span></li>
+<li>Tour de Contrastes (7 sept) — 96€ <span class="ok">COMPRADO</span></li>
+</ul>
 </div>
-
-
-<!-- BILLETES -->
+<div class="icard">
+<h3>✈️ Vuelos</h3>
+<p>Ida: AGP → EWR, UA351, 12:10<br>
+Vuelta: EWR → AGP, UA350, 18:05<br>
+Localizador United: DHH4N0<br>
+Localizador Lufthansa: 8RACJM</p>
+</div>
+<div class="icard">
+<h3>🕐 Diferencia horaria</h3>
+<p>Nueva York va <b>6 horas por detrás</b> de España durante estas fechas (ambos países en horario de verano). Cuando en España son las 18:00, en Nueva York son las 12:00.</p>
+<p style="margin-top:6px;"><b>Ida (2 sept):</b> salida de Málaga 09:35 (hora España) → llegada a Newark 12:10 (hora NY), que equivale a las 18:10 hora España.</p>
+<p style="margin-top:6px;"><b>Vuelta (8 sept):</b> salida de Newark 18:05 (hora NY) → llegada a Málaga 07:35 del día siguiente (hora España).</p>
+</div>
+<div class="icard">
+<h3>🚌 Bus aeropuerto</h3>
+<p>Newark Airport Express — Port Authority (calle 41, entre 8ª y 9ª Ave). Recomendado 8/9: bus 14:20 → llegada 15:10, margen de casi 3h.</p>
+</div>
+<div class="icard">
+<h3>📶 eSIM</h3>
+<p>Saily 5GB/persona — 12,49€/persona.</p>
+</div>
+<div class="icard">
+<h3>💳 Pagos</h3>
+<p>Revolut cuenta conjunta (Google Pay) como método principal.</p>
+</div>
+<div class="icard">
+<h3>🏨 Alojamiento</h3>
+<p>Row NYC, Times Square. Desayuno incluido.</p>
+</div>
+</div>
 <div class="tickets-wrap hidden" id="tickets">
-  <div class="subnav" id="subnav">
-    <button type="button" class="tjue active" data-subtarget="t-jue">JUE 3</button>
-    <button type="button" class="tvie" data-subtarget="t-vie">VIE 4</button>
-    <button type="button" class="tsab" data-subtarget="t-sab">SÁB 5</button>
-    <button type="button" class="tdom" data-subtarget="t-dom">DOM 6</button>
-    <button type="button" class="tlun" data-subtarget="t-lun">LUN 7</button>
-    <button type="button" class="tdoc" data-subtarget="t-doc">DOCS</button>
-  </div>
-
-  <div class="tsec tjue" id="t-jue">
-    <div class="day-head">
-      <div class="badge">JUEVES 3 SEPT · 18:00</div>
-      <h2>Free Tour High Line</h2>
-      <div class="date">Hudson Yards · Chelsea Market</div>
-      <div class="icon">🌆</div>
-    </div>
-    <div class="day-body">
-      <div class="info-line"><span>📍</span><span><b>Encuentro:</b> W 34th St &amp; Hudson Boulevard, salida metro línea 7 de Hudson Yards (15 min antes)</span></div>
-      <div class="info-line"><span>🔖</span><span><b>Reserva:</b> A40786137 · Civitatis · 3 personas</span></div>
-      <div class="tdivider"></div>
-      <div class="noqr-box">
-        <div class="umbrella">☂️ 💜</div>
-        <p>No hace falta enseñar nada — reconoceréis al guía por el <b>paraguas color púrpura</b>. Es gratuito, se paga voluntad al final (10-15€/persona recomendado).</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="tsec tvie hidden" id="t-vie">
-    <div class="day-head">
-      <div class="badge">VIERNES 4 SEPT · 14:30</div>
-      <h2>Summit One Vanderbilt</h2>
-      <div class="date">Entry Only · 3 entradas</div>
-      <div class="icon">🌇</div>
-    </div>
-    <div class="day-body">
-      <div class="ticket">
-        <div class="who">Adulto 1</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">1001011051439376121791</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Adulto 2</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">1001011051439362579260</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Youth (Guille)</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">1001021051439451012793</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tsec tsab hidden" id="t-sab">
-    <div class="day-head">
-      <div class="badge">SÁBADO 5 SEPT · 11:00</div>
-      <h2>Free Tour Chinatown, Little Italy y SoHo</h2>
-      <div class="date">Foley Square</div>
-      <div class="icon">🎨</div>
-    </div>
-    <div class="day-body">
-      <div class="info-line"><span>📍</span><span><b>Encuentro:</b> monumento central de Foley Square, frente al edificio de la Corte Suprema (10 min antes)</span></div>
-      <div class="info-line"><span>🔖</span><span><b>Reserva:</b> A40784887 · Civitatis · 3 personas</span></div>
-      <div class="tdivider"></div>
-      <div class="noqr-box">
-        <div class="umbrella">☂️ 🩵</div>
-        <p>Reconoceréis al guía por el <b>paraguas color azul turquesa</b>. Gratuito, se paga voluntad al final (10-15€/persona recomendado).</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="tsec tdom hidden" id="t-dom">
-    <div class="day-head">
-      <div class="badge">DOMINGO 6 SEPT · DÍA COMPLETO</div>
-      <h2>Legoland New York</h2>
-      <div class="date">Bus Coach USA + Entrada al parque</div>
-      <div class="icon">🧱</div>
-    </div>
-    <div class="day-body">
-      <div class="info-line"><span>🚌</span><span><b>Bus Coach USA (ida y vuelta)</b> · Port Authority, Gate 409/410 → Legoland NY</span></div>
-      <div class="ticket">
-        <div class="who">Adulto 1 · Bus</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">Ref: EE49D674</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Adulto 2 · Bus</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">Ref: 9394037D</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Niño (Guille) · Bus</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">Ref: 4DC30180</div>
-      </div>
-      <div class="tdivider"></div>
-      <div class="info-line"><span>🎡</span><span><b>Entrada al parque</b> · Order #632557906 · Visit date 09/06/2026</span></div>
-      <div class="ticket">
-        <div class="who">Adulto 1 · Parque</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">730026055340328644</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Adulto 2 · Parque</div>
-        <img src="data:image/png;base64,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">
-        <div class="ref">730026035454231625</div>
-      </div>
-      <div class="ticket">
-        <div class="who">Niño (Guille) · Parque</div>
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAEOCAIAAAB3oFnhAAAigUlEQVR4nO3d+1dTV9oH8JzcE0Ku5MI1VwggGgyg3JqOaIudVW1XtT90Vtfq/GNzWdM17UzrdGlrHbEWK8iIIBakInIxGgIkhEBCyJXk5P3hrL7rfad7H/TAMWx4Pj+6z95nE/Lldh6fTRWLRQEAgEzCUm8AAMAdBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgkGAASAYBBgAgok5z4zFYqFQKBwO7+NuDgiz2WyxWLRaLR+Lr6+vh0KhaDTKbXplZaXFYlGr1RzmZrPZUCgUCoUymQy3ux9Y5eXlFoulsrKSoqhS7+WN4h7gUCg0NDQ0MjKyj7s5ILq7u30+H08BDgQCw8PDjx494jCXoiifz+fz+bgFOJ1OT01NDQ0NRSIRDtMPMofD4fP5zGazSCQq9V7eKO4BDofDIyMjf/vb3/ZxNwcETdMNDQ1NTU18LB4MBu/cuXPt2jUOcymKkkgkTU1NLpeLw/R0Oj09Pf3NN9/4/X4O0w+yU6dOWSyWt956q9QbedPgd2AACAYBBoBgEGAACAYBBoBgEGAACAYBBoBgEGAACMb9OTA7oVCoUCiUSuUBfLBeKBRSqVQ6naZp+s3fXSaTabVai8WCHM3n8+l0OpVKFYvF344Wi8VUKrW+vr66uoqcLpVKmZed297kcrlCoZDJZNym8yqdTqfT6VwuV+qNHCx8BVihUHg8Ho/Ho9PpeLoFZ7FYbGpqampqant7+83fva6u7ty5c9XV1cjRaDQ6NTU1OTmJq3Z89uzZ9evXHz9+jFvc4/GcOHGC295sNltra6vD4eA2nVfT09NTU1OBQKDUGzlY+A3wxx9/XFdXx9MtOAsGgx
+<div class="subnav" id="subnav">
+<button type="button" class="tjue active" data-subtarget="t-jue">JUE 3</button>
+<button type="button" class="tvie" data-subtarget="t-vie">VIE 4</button>
+<button type="button" class="tsab" data-subtarget="t-sab">SÁB 5</button>
+<button type="button" class="tdom" data-subtarget="t-dom">DOM 6</button>
+<button type="button" class="tlun" data-subtarget="t-lun">LUN 7</button>
+<button type="button" class="tdoc" data-subtarget="t-doc">DOCS</button>
+</div>
+<div class="tsec tjue" id="t-jue">
+<div class="day-head">
+<div class="badge">JUEVES 3 SEPT · 18:00</div>
+<h2>Free Tour High Line</h2>
+<div class="date">Hudson Yards · Chelsea Market</div>
+<div class="icon">🌆</div>
+</div>
+<div class="day-body">
+<div class="info-line"><span>📍</span><span><b>Encuentro:</b> W 34th St &amp; Hudson Boulevard, salida metro línea 7 de Hudson Yards (15 min antes)</span></div>
+<div class="info-line"><span>🔖</span><span><b>Reserva:</b> A40786137 · Civitatis · 3 personas</span></div>
+<div class="tdivider"></div>
+<div class="noqr-box">
+<div class="umbrella">☂️ 💜</div>
+<p>No hace falta enseñar nada — reconoceréis al guía por el <b>paraguas color púrpura</b>. Es gratuito, se paga voluntad al final (10-15€/persona recomendado).</p>
+</div>
+</div>
+</div>
+<div class="tsec tvie hidden" id="t-vie">
+<div class="day-head">
+<div class="badge">VIERNES 4 SEPT · 14:30</div>
+<h2>Summit One Vanderbilt</h2>
+<div class="date">Entry Only · 3 entradas</div>
+<div class="icon">🌇</div>
+</div>
+<div class="day-body">
+<div class="ticket">
+<div class="who">Adulto 1</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">1001011051439376121791</div>
+</div>
+<div class="ticket">
+<div class="who">Adulto 2</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">1001011051439362579260</div>
+</div>
+<div class="ticket">
+<div class="who">Youth (Guille)</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">1001021051439451012793</div>
+</div>
+</div>
+</div>
+<div class="tsec tsab hidden" id="t-sab">
+<div class="day-head">
+<div class="badge">SÁBADO 5 SEPT · 11:00</div>
+<h2>Free Tour Chinatown, Little Italy y SoHo</h2>
+<div class="date">Foley Square</div>
+<div class="icon">🎨</div>
+</div>
+<div class="day-body">
+<div class="info-line"><span>📍</span><span><b>Encuentro:</b> monumento central de Foley Square, frente al edificio de la Corte Suprema (10 min antes)</span></div>
+<div class="info-line"><span>🔖</span><span><b>Reserva:</b> A40784887 · Civitatis · 3 personas</span></div>
+<div class="tdivider"></div>
+<div class="noqr-box">
+<div class="umbrella">☂️ 🩵</div>
+<p>Reconoceréis al guía por el <b>paraguas color azul turquesa</b>. Gratuito, se paga voluntad al final (10-15€/persona recomendado).</p>
+</div>
+</div>
+</div>
+<div class="tsec tdom hidden" id="t-dom">
+<div class="day-head">
+<div class="badge">DOMINGO 6 SEPT · DÍA COMPLETO</div>
+<h2>Legoland New York</h2>
+<div class="date">Bus Coach USA + Entrada al parque</div>
+<div class="icon">🧱</div>
+</div>
+<div class="day-body">
+<div class="info-line"><span>🚌</span><span><b>Bus Coach USA (ida y vuelta)</b> · Port Authority, Gate 409/410 → Legoland NY</span></div>
+<div class="ticket">
+<div class="who">Adulto 1 · Bus</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">Ref: EE49D674</div>
+</div>
+<div class="ticket">
+<div class="who">Adulto 2 · Bus</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">Ref: 9394037D</div>
+</div>
+<div class="ticket">
+<div class="who">Niño (Guille) · Bus</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">Ref: 4DC30180</div>
+</div>
+<div class="tdivider"></div>
+<div class="info-line"><span>🎡</span><span><b>Entrada al parque</b> · Order #632557906 · Visit date 09/06/2026</span></div>
+<div class="ticket">
+<div class="who">Adulto 1 · Parque</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">730026055340328644</div>
+</div>
+<div class="ticket">
+<div class="who">Adulto 2 · Parque</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">730026035454231625</div>
+</div>
+<div class="ticket">
+<div class="who">Niño (Guille) · Parque</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">730025945768538240</div>
+</div>
+</div>
+</div>
+<div class="tsec tlun hidden" id="t-lun">
+<div class="day-head">
+<div class="badge">LUNES 7 SEPT · 9:00</div>
+<h2>Excursión de Contrastes</h2>
+<div class="date">Manhattan, Bronx, Queens y Brooklyn</div>
+<div class="icon">🐂</div>
+</div>
+<div class="day-body">
+<div class="info-line"><span>📍</span><span><b>Encuentro:</b> Hotel The Manhattan at Times Sq, 790 7th Ave (15 min antes)</span></div>
+<div class="info-line"><span>🔖</span><span><b>Bono:</b> EXC-T142753579 · Excursiones Nueva York · 3 adultos</span></div>
+<div class="tdivider"></div>
+<div class="ticket">
+<div class="who">Bono válido para los 3</div>
+<div class="noimg">📎 código QR / imagen no incluida aquí — usar la reserva en el email o la app original</div>
+<div class="ref">EXC-T142753579</div>
+</div>
+</div>
+</div>
+<div class="tsec tdoc hidden" id="t-doc">
+<div class="day-head">
+<div class="badge">DOCUMENTOS DE VIAJE</div>
+<h2>ESTA aprobados</h2>
+<div class="date">Autorización de viaje EE.UU.</div>
+<div class="icon">🛂</div>
+</div>
+<div class="day-body">
+<div class="ticket" style="border-style:solid;">
+<div class="who">Laura del Carmen Novel Muñoz</div>
+<div style="font-size:13px; line-height:1.8; text-align:left; margin-top:6px;">
+<b>Estatus:</b> Autorización Aprobada<br>
+<b>Nº solicitud:</b> 2912521047P098F1<br>
+<b>Pasaporte:</b> PAZ939646<br>
+<b>Vence:</b> 23 jul 2028
+</div>
+</div>
+<div class="ticket" style="border-style:solid;">
+<div class="who">Francisco Adrián Díaz Almodóvar</div>
+<div style="font-size:13px; line-height:1.8; text-align:left; margin-top:6px;">
+<b>Estatus:</b> Autorización Aprobada<br>
+<b>Nº solicitud:</b> O72392R562304P2R<br>
+<b>Pasaporte:</b> PAS203854<br>
+<b>Vence:</b> 23 jul 2028
+</div>
+</div>
+<div class="ticket" style="border-style:solid;">
+<div class="who">Guillermo Díaz Novel</div>
+<div style="font-size:13px; line-height:1.8; text-align:left; margin-top:6px;">
+<b>Estatus:</b> Autorización Aprobada<br>
+<b>Nº solicitud:</b> 15191J06O1R0T115<br>
+<b>Pasaporte:</b> PAS203883<br>
+<b>Vence:</b> 23 jul 2028
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer-note">FAMILIA DÍAZ NOVEL · NYC 2026</div>
+<div class="arrows" id="arrows">
+<button id="prevBtn">← Anterior</button>
+<button id="nextBtn">Siguiente →</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const DAY_STOPS = {"d1": {"color": "#1c2b4a", "stops": [{"n": 1, "name": "Row NYC (hotel)", "lat": 40.758749, "lng": -73.988447}, {"n": 2, "name": "House of Spells", "lat": 40.756701, "lng": -73.988951}, {"n": 3, "name": "tm:rw", "lat": 40.7566, "lng": -73.9875}, {"n": 4, "name": "M&M's / Hershey's", "lat": 40.760066, "lng": -73.984296}, {"n": 5, "name": "Plaza / Apple Store", "lat": 40.764632, "lng": -73.974325}, {"n": 6, "name": "Nike", "lat": 40.759739, "lng": -73.976813}, {"n": 7, "name": "Rockefeller Center", "lat": 40.75874, "lng": -73.978674}, {"n": 8, "name": "Ellen's Stardust Diner", "lat": 40.761872, "lng": -73.983436}]}, "d2": {"color": "#1f7a5c", "stops": [{"n": 1, "name": "Museo de Historia Natural (AMNH)", "lat": 40.781324, "lng": -73.973988}, {"n": 2, "name": "Hudson Yards (inicio free tour)", "lat": 40.753807, "lng": -74.002154}, {"n": 3, "name": "Market 57 (cena)", "lat": 40.743365, "lng": -74.009234}]}, "d3": {"color": "#c94f3d", "stops": [{"n": 1, "name": "Zoo de Central Park", "lat": 40.767706, "lng": -73.971991}, {"n": 2, "name": "Spirit Halloween", "lat": 40.76176, "lng": -73.966158}, {"n": 3, "name": "Teleférico Roosevelt Island", "lat": 40.761279, "lng": -73.964166}, {"n": 4, "name": "Biblioteca Pública", "lat": 40.753182, "lng": -73.982253}, {"n": 5, "name": "Summit One Vanderbilt", "lat": 40.752775, "lng": -73.978725}, {"n": 6, "name": "Macy's Herald Square", "lat": 40.750482, "lng": -73.988294}, {"n": 7, "name": "Flatiron Building", "lat": 40.74106, "lng": -73.989699}, {"n": 8, "name": "Harry Potter Store", "lat": 40.7413, "lng": -73.9893}, {"n": 9, "name": "Abracadabra NYC", "lat": 40.740934, "lng": -73.991879}]}, "d4": {"color": "#7a4fc9", "stops": [{"n": 1, "name": "Foley Square (inicio free tour)", "lat": 40.714351, "lng": -74.002993}, {"n": 2, "name": "New Balance SoHo", "lat": 40.723384, "lng": -73.998188}, {"n": 3, "name": "Christmas in New York", "lat": 40.7188003, "lng": -73.9973732}, {"n": 4, "name": "Mercer Labs", "lat": 40.710841, "lng": -74.010573}, {"n": 5, "name": "Puente de Brooklyn", "lat": 40.706086, "lng": -73.996864}, {"n": 6, "name": "Jane's Carousel (DUMBO)", "lat": 40.70445, "lng": -73.992388}, {"n": 7, "name": "Time Out Market", "lat": 40.703427, "lng": -73.992113}]}, "d5": {"color": "#d6912a", "stops": [{"n": 1, "name": "Port Authority (bus)", "lat": 40.756788, "lng": -73.990721}, {"n": 2, "name": "Legoland New York", "lat": 41.378166, "lng": -74.313078}]}, "d6": {"color": "#2472a3", "stops": [{"n": 1, "name": "Hotel The Manhattan (encuentro)", "lat": 40.762286, "lng": -73.98264}, {"n": 2, "name": "City Hall", "lat": 40.71279, "lng": -74.005997}, {"n": 3, "name": "Freedom Tower", "lat": 40.712743, "lng": -74.01338}, {"n": 4, "name": "Oculus", "lat": 40.711804, "lng": -74.01185}, {"n": 5, "name": "Trinity Church", "lat": 40.707893, "lng": -74.01179}, {"n": 6, "name": "Wall Street", "lat": 40.707399, "lng": -74.010209}, {"n": 7, "name": "Charging Bull", "lat": 40.705575, "lng": -74.01345}, {"n": 8, "name": "Battery Park", "lat": 40.702931, "lng": -74.01536}]}, "d7": {"color": "#b5286e", "stops": [{"n": 1, "name": "Madame Tussauds", "lat": 40.756475, "lng": -73.988389}, {"n": 2, "name": "Port Authority", "lat": 40.756788, "lng": -73.990721}]}};
+const dayMaps = {};
+function initDayMap(dayId) {
+if (dayMaps[dayId] || !DAY_STOPS[dayId]) return;
+const container = document.getElementById('map-' + dayId);
+if (!container) return;
+const {color, stops} = DAY_STOPS[dayId];
+const map = L.map(container, {zoomControl: true, scrollWheelZoom: false});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+const latlngs = stops.map(s => [s.lat, s.lng]);
+L.polyline(latlngs, {color: color, weight: 3, dashArray: '6 6', opacity: 0.8}).addTo(map);
+stops.forEach(s => {
+const icon = L.divIcon({
+html: '<div style="background:' + color + ';color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:12px;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);">' + s.n + '</div>',
+className: '', iconSize: [24,24], iconAnchor: [12,12]
+});
+L.marker([s.lat, s.lng], {icon}).addTo(map).bindPopup(s.n + '. ' + s.name);
+});
+map.fitBounds(latlngs, {padding: [24,24]});
+dayMaps[dayId] = map;
+}
+</script>
+<script>
+const order = ['d1','d2','d3','d4','d5','d6','d7','info','tickets'];
+const navLinks = document.querySelectorAll('#navbar button');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+function showDay(id) {
+order.forEach(o => {
+const el = document.getElementById(o);
+if (el) el.classList.toggle('hidden', o !== id);
+});
+navLinks.forEach(a => a.classList.toggle('active', a.dataset.target === id));
+const idx = order.indexOf(id);
+prevBtn.disabled = idx === 0;
+nextBtn.disabled = idx === order.length - 1;
+window.scrollTo({top: 0, behavior: 'smooth'});
+setTimeout(() => {
+initDayMap(id);
+if (dayMaps[id]) dayMaps[id].invalidateSize();
+}, 60);
+}
+navLinks.forEach(a => {
+a.addEventListener('click', (e) => {
+e.preventDefault();
+showDay(a.dataset.target);
+});
+});
+prevBtn.addEventListener('click', () => {
+const current = order.find(o => !document.getElementById(o).classList.contains('hidden'));
+const idx = order.indexOf(current);
+if (idx > 0) showDay(order[idx - 1]);
+});
+nextBtn.addEventListener('click', () => {
+const current = order.find(o => !document.getElementById(o).classList.contains('hidden'));
+const idx = order.indexOf(current);
+if (idx < order.length - 1) showDay(order[idx + 1]);
+});
+showDay('d1');
+// Sub-navegación de la pestaña BILLETES
+const subOrder = ['t-jue','t-vie','t-sab','t-dom','t-lun','t-doc'];
+const subBtns = document.querySelectorAll('#subnav button');
+function showTicketDay(id) {
+subOrder.forEach(o => {
+const el = document.getElementById(o);
+if (el) el.classList.toggle('hidden', o !== id);
+});
+subBtns.forEach(b => b.classList.toggle('active', b.dataset.subtarget === id));
+}
+subBtns.forEach(b => {
+b.addEventListener('click', () => showTicketDay(b.dataset.subtarget));
+});
+showTicketDay('t-jue');
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', function () {
+navigator.serviceWorker.register('sw.js').catch(function () {});
+});
+}
+</script>
+</body>
+</html>
